@@ -35,7 +35,6 @@ int DNA_tester() {
 
         if (mode == 0) { // transcription from template
 
-
             char * template = * DNA_template_generator(); // generate the template
 
             char *mRNA_attempt;
@@ -45,6 +44,7 @@ int DNA_tester() {
 
         }
         else if (mode == 1) {  // transcription from code
+            
             char * code = * DNA_code_generator(); // generate the code
 
             char *mRNA_attempt;
@@ -57,7 +57,7 @@ int DNA_tester() {
 
         }
 
-        printf("Would you like to contnue (1/0)?: "); scanf("%d", cont); // check if they want to continue
+        printf("Would you like to continue (1/0)?: "); scanf("%d", cont); // check if they want to continue
 
     }
 
