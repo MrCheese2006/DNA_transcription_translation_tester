@@ -84,3 +84,27 @@ int main() {
     printf("%s", str2);
     return 0;
 }
+
+    // char * code = DNA_code_generator();
+    // printf("Code: %s\n", code);
+    // char * mRNA_from_code = mRNA_from_code_ans(code);
+    // int len = strlen(mRNA_from_code);
+    // char * mRNA_code_attempt = (char *)malloc(len + 1);
+    // mRNA_code_attempt[strlen(mRNA_from_code)] = '\0';
+    // printf("Input the mRNA strand: "); fgets(mRNA_code_attempt, len+1000, stdin); printf("\n");
+    // printf("ans: %s\n", mRNA_from_code);
+    // printf("%d\n", compare_transcription(mRNA_from_code, mRNA_code_attempt));
+    // // char * template = DNA_template_generator();
+
+    // // printf("DNA code: %s\n    mRNA: %s\n", code, mRNA_from_code);
+
+    // char * template = DNA_template_generator();
+    // printf("Template: %s\n", template);
+    // char * mRNA_from_template = mRNA_from_template_ans(template);
+    // char * mRNA_template_attempt = (char *)malloc(strlen(mRNA_from_template) + 1);
+    // mRNA_template_attempt[strlen(mRNA_from_template)] = '\0';
+    // printf("Input the mRNA strand: "); fgets(mRNA_template_attempt, len+1000, stdin); printf("\n");
+    // printf("ans: %s\n", mRNA_from_template);
+    // printf("%d\n", compare_transcription(mRNA_from_template, mRNA_template_attempt));
+
+    // // printf("DNA template: %s\n        mRNA: %s\n", template, mRNA_from_template);

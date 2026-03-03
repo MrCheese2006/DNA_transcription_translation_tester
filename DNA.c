@@ -69,7 +69,7 @@ char *DNA_code_generator() {
 
 }
 
-char * DNA_template_generator() {
+char *DNA_template_generator() {
     // a function that generates a random gene template from DNA
 
     int multiplier = (rand() % 6) + 3; // have 2-7 codons in the string
@@ -130,6 +130,69 @@ char * DNA_template_generator() {
     }
 
     return template;
+}
+
+char *mRNA_generator() {
+    // generate and mRNA strand for AA translation
+
+    int multiplier = (rand() % 6) + 3; // have 3-8 codons in the string
+    int size = 4 * multiplier - 1; // (3 bases + space) * number _of_codons - no_space_at_end = size of string
+    char *mRNA = (char *)malloc(size+1);
+    *(mRNA + size) = '\0';
+
+    // start codon
+    *(mRNA + 0) = 'A';
+    *(mRNA + 1) = 'U';
+    *(mRNA + 2) = 'G';
+    
+
+    int len = strlen(mRNA);
+
+    int mode;
+    int i = 3;
+
+    for (i; i <= len - 3; i++) {
+        
+        if ((i+1) % 4 ==  0 & i != 0) { // break the sequence into codons
+            *(mRNA + i) = ' ';
+            continue;
+        }
+
+        mode = rand() % 4; // get random numbers from 0 to 3
+
+        if (mode == 0) { // select base from random number
+            *(mRNA + i) = 'A';
+        }
+        else if (mode == 1) {
+            *(mRNA + i) = 'U';
+        } 
+        else if (mode == 2) {
+            *(mRNA + i) = 'G';
+        }    
+        else {
+            *(mRNA + i) = 'C';
+        }
+    }
+
+    // stop codon in DNA mRNA
+    int stop_mode = rand() % 3; // random numer to choose stop codon
+    if (stop_mode == 0) {
+        *(mRNA + len-3) = 'U';
+        *(mRNA + len-2) = 'A';
+        *(mRNA + len-1) = 'A';
+    }
+    else if (stop_mode == 1) {
+        *(mRNA + len-3) = 'U';
+        *(mRNA + len-2) = 'A';
+        *(mRNA + len-1) = 'G';
+    }
+    else {
+        *(mRNA + len-3) = 'U';
+        *(mRNA + len-2) = 'G'; 
+        *(mRNA + len-1) = 'A'; 
+    }
+
+    return mRNA;
 }
 
 char *mRNA_from_code_ans(char *code) {
@@ -199,7 +262,7 @@ int compare_transcription(char *mRNA, char *input) {
 
 }
 
-char AA_translator(char *codon) {
+char get_AA(char *codon) {
 
     if (codon[0] == 'A') {
         if (codon[1] == 'A') {
@@ -276,7 +339,7 @@ char AA_translator(char *codon) {
     else if (codon[0] == 'U') {
         if (codon[1] == 'A') {
             if (codon[2] ==  'A') {
-                return 's'; // s = stop
+                return 's' ; // There is no corresponding AA for the stop codon, just use 's' to represent stop
             }
             else if (codon[2] ==  'G') {
                 return 's'; // s = stop
@@ -348,6 +411,55 @@ char AA_translator(char *codon) {
 
 }
 
+char *get_codon(char *mRNA, int index) {
+    char * codon = (char *)malloc(3+1);
+    codon[3] = '\0';
+
+    codon[0] = mRNA[index];
+    codon[1] = mRNA[index+1];
+    codon[2] = mRNA[index+2];
+
+    return codon;
+}
+
+char *AA_strand_ans(char *mRNA) {
+    // returns the amino acid sequence for a given mRNA strand
+
+    int len = strlen(mRNA);
+
+    char *codon;
+    char AA;
+    char *AA_strand = (char *)malloc((len+1) / 4 + 1); // the AA strand needs to be len / 4 because a codon+space takes 4 characters. Add 1 for the null character
+    int AA_i = 0;    
+
+    for(int i = 0; i < len; i=i+4) { // increment by codon+space characters each time
+        codon = get_codon(mRNA, i); // extract the current codon from the mRNA strand
+        AA = get_AA(codon); // get the right AA from the current codon
+        if (AA == 's'){
+            AA_strand[AA_i-1] = '\0'; // Set NULL
+            break; // the AA_strand is done when the stop codon is reached, and there is no AA to be added to the strand for the stop codon
+        }
+        AA_strand[AA_i] = AA; // Add the AA to the strand
+        AA_i++; // increment the AA index
+        AA_strand[AA_i] = ' '; // Add a space between AA's
+        AA_i++; // increment the AA index
+    }
+
+    return AA_strand;
+}
+
+int compare_translation(char *AA_strand, char *AA_strand_attempt, int len) {
+    // M E G s len = 7 i < len-2
+
+    for (int i = 0; i < len-2; i++) {
+        if (AA_strand[i] != AA_strand_attempt[i]){
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
 int DNA_tester() {
 
     int cont = 1;
@@ -357,14 +469,15 @@ int DNA_tester() {
     char *code;
     char *mRNA;
     char *mRNA_attempt;
+    char *AA_strand;
+    char *AA_strand_attempt;
     int len;
     int res;
     // char *cont_str;
 
     while (cont) {
 
-        mode = rand() % 2; // get either 0, 1 or 2 for 3 transcription from template, transcription from code and translation to AA's
-        printf("%d\n", mode);
+        mode = rand() % 3; // get either 0, 1 or 2 for 3 transcription from template, transcription from code and translation to AA's
 
         if (mode == 0) { // transcription from DNA template strand
 
@@ -393,12 +506,12 @@ int DNA_tester() {
         else if (mode == 1) {  // transcription from DNA code strand
 
             code = DNA_code_generator(); // generate the code
-            printf("Here is a DNA gene (code strand). Enter the transcription: %s\n", code);
+            printf("Here is a DNA gene (code strand):        %s\n", code);
             mRNA = mRNA_from_code_ans(code); // generate the answer
             len = strlen(mRNA);
             mRNA_attempt = (char *)malloc(len + 1); // allocate space for input
 
-            printf("Enter the transcription of the DNA code:                   "); fgets(mRNA_attempt, len+1, stdin); printf("\n"); // get the users' attempt at mRNA transcription
+            printf("Enter the transcription of the DNA code: "); fgets(mRNA_attempt, len+1, stdin); printf("\n"); // get the users' attempt at mRNA transcription
 
             res = compare_transcription(mRNA, mRNA_attempt); // compare the transcription
 
@@ -406,7 +519,7 @@ int DNA_tester() {
                 printf("Correct!\n");
             }
             else {
-                printf("Incorrect. The correct answer is                           %s\n", mRNA);
+                printf("Incorrect. The correct answer is     %s\n", mRNA);
             }
 
             free(code);
@@ -415,15 +528,30 @@ int DNA_tester() {
 
         }
         else { // translation to AA's
+            mRNA = mRNA_generator();
+
+            printf("Here is an mRNA strand:                           %s\n", mRNA);
+            AA_strand = AA_strand_ans(mRNA); // generate the answer
+            len = strlen(AA_strand);
+            AA_strand_attempt = (char *)malloc(len + 1); // allocate space for input
+
+            printf("Enter the translation of the mRNA strand to AA's: "); fgets(AA_strand_attempt, len+1, stdin); printf("\n"); // get the users' attempt at mRNA transcription
+
+            res = compare_translation(AA_strand, AA_strand_attempt, len);
+
+            if (res) {
+                printf("Correct!\n");
+            }
+            else {
+                printf("Incorrect. The correct answer is                  %s\n", AA_strand);
+            }
 
         }
-
-        // cont_str = (char *)malloc(100);
 
         printf("Would you like to continue (enter 1 or 0)? "); 
         scanf("%d", &cont);
         getchar();
-        printf("\n"); // get the users' attempt at mRNA transcription // check if they want to continue
+        printf("\n");// check if they want to continue
 
         // free(cont_str);
 
