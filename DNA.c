@@ -575,7 +575,7 @@ int DNA_tester() {
 
     }
 
-    printf("\nThe session is not terminated. Please run the code again to start over.");
+    printf("\nThe session is now terminated. Please run the code again to start over.");
 
     return 0;
 }

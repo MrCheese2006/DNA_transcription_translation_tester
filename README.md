@@ -76,5 +76,5 @@ Unfortunately our response is incorrect. The correct response is shown.
 ```
 Would you like to continue (enter 1 or 0)? 0
 
-The session is not terminated. Please run the code again to start over.
+The session is now terminated. Please run the code again to start over.
 ```
