@@ -3,7 +3,17 @@
 # include "string.h"
 # include "time.h"
 
-// could implement a "streak tracker"
+int start() {
+
+    srand(time(NULL)); // seed the code so rand() produces a new number each time
+
+    printf("\nWelcome to my DNA transcription and translation tester!\n\n");
+    printf("   - This code allows you to test your ability to transcribe DNA sequences (both template and coding strands) into mRNA sequences, as well as translate mRNA sequences to amino acid (AA) polypeptide sequences.\n\n");
+
+    printf("How the game works:\n");
+    printf("   - At random, you will be given a DNA coding or template strand or an mRNA sequence, which respectively need to be transcribed into an mRNA sequence or AA chain. Spaces should be included between codons/AA's, and all inputs should be in uppercase. For amino acids, please use the single-letter short forms only (ex. AUG --> M, not Met).\n");
+    printf("   - DNA template sequences are given in the 3' to 5' direction, DNA code sequences in the 5' to 3' direction, and mRNA sequences in the 5' to 3' direction.\n\n");
+}
 
 char *DNA_code_generator() {
     // a function that generates a random gene from DNA
@@ -429,7 +439,8 @@ char *AA_strand_ans(char *mRNA) {
 
     char *codon;
     char AA;
-    char *AA_strand = (char *)malloc((len+1) / 4 + 1); // the AA strand needs to be len / 4 because a codon+space takes 4 characters. Add 1 for the null character
+    char *AA_strand = (char *)malloc(2*((len+1) / 4 + 1)); // the AA strand needs to be len / 4 because a codon+space takes 4 characters. Add 1 for the null character
+    AA_strand[(len+1) / 4] = '\0'; // NULL
     int AA_i = 0;    
 
     for(int i = 0; i < len; i=i+4) { // increment by codon+space characters each time
@@ -462,6 +473,8 @@ int compare_translation(char *AA_strand, char *AA_strand_attempt, int len) {
 
 int DNA_tester() {
 
+    start();
+
     int cont = 1;
 
     int mode;
@@ -476,6 +489,8 @@ int DNA_tester() {
     // char *cont_str;
 
     while (cont) {
+
+        printf("---------------------------------------------------------------------------------------------------------------------\n\n");
 
         mode = rand() % 3; // get either 0, 1 or 2 for 3 transcription from template, transcription from code and translation to AA's
 
@@ -545,7 +560,10 @@ int DNA_tester() {
             else {
                 printf("Incorrect. The correct answer is                  %s\n", AA_strand);
             }
-
+            
+            free(mRNA);
+            free(AA_strand);
+            free(AA_strand_attempt);
         }
 
         printf("Would you like to continue (enter 1 or 0)? "); 
@@ -557,14 +575,12 @@ int DNA_tester() {
 
     }
 
-    printf("Session Terminated. Please run code again to start over.");
+    printf("\nThe session is not terminated. Please run the code again to start over.");
 
     return 0;
 }
 
 int main() {
-
-    srand(time(NULL)); // seed the code so rand() produces a new number each time
 
     DNA_tester();
 
