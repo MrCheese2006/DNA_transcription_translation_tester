@@ -1,10 +1,12 @@
 # DNA Transcription and Translation Tester
 
-Welcome to my DNA Transcription and Translation Tester! This is a program that generates random DNA and mRNA sequences to test transcription and translation. To use, after download and run ```DNA.c```. This was made in C because I needed the practice.
+Welcome to my DNA Transcription and Translation Tester! This is a program that generates random DNA and mRNA sequences to you practice transcription and translation. To use, after download and run ```DNA.c```. This was made in C because I needed the practice.
 
 ## How to Use
 
 After running the code, you will be presented with a welcome message and either a prompt to transcribe a DNA sequence or translate an mRNA sequence. DNA template sequences are given in the 3' to 5' direction, DNA code sequences in the 5' to 3' direction, and mRNA sequences in the 5' to 3' direction. Enter the transcription or translation (as appropriate) into the terminal where prompted and press enter. All inputs should be in capital letters and spaces should be placed between codons/amino acids. Please use the single-letter short-forms for amino acids (ex. use M instead of Met for the codon AUG). If your input is correct, you will be asked if you would like to continue, please enter a 1 to continue or a 0 to stop. If the input is incorrect, the correct sequence will be printed to the terminal, and the same "continue" prompt will appear. Prompts are chosen randomly.
+
+An image of the AA codon wheel is included in the repository named ```AA_Codon_Wheel.png```.
 
 ## Example Run
 
