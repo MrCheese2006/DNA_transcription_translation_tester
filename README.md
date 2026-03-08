@@ -8,6 +8,8 @@ After running the code, you will be presented with a welcome message and either 
 
 An image of the AA codon wheel is included in the repository named ```AA_Codon_Wheel.png```.
 
+Let me know if you find any errors!
+
 ## Example Run
 
 1. The welcome message is printed, and the first prompt appears. In this case, you are asked to transcribe a DNA code strand.
@@ -74,5 +76,5 @@ Unfortunately our response is incorrect. The correct response is shown.
 ```
 Would you like to continue (enter 1 or 0)? 0
 
-The session is not terminated. Please run code again to start over.
+The session is not terminated. Please run the code again to start over.
 ```
