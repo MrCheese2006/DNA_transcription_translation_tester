@@ -439,7 +439,7 @@ char *AA_strand_ans(char *mRNA) {
 
     char *codon;
     char AA;
-    char *AA_strand = (char *)malloc(2*((len+1) / 4 + 1)); // the AA strand needs to be len / 4 because a codon+space takes 4 characters. Add 1 for the null character
+    char *AA_strand = (char *)malloc(2*((len+1) / 4 + 1)); // the AA strand needs to be (len+1) / 4 because a codon+space takes 4 characters. Add 1 for the null character
     AA_strand[(len+1) / 4] = '\0'; // NULL
     int AA_i = 0;    
 
